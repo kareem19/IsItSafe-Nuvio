@@ -1,11 +1,11 @@
-name = "isitsafe-addon"
+name = "isitsafe-nuvio"
 main = "src/index.js"
 compatibility_date = "2025-09-01"
 
 # Persistent cache (see README step 1: create the KV namespace, paste its id here)
 [[kv_namespaces]]
 binding = "CACHE"
-id = "b9ffe10a3a6a45a29bfedf1c89e5fd04"
+id = "PASTE_YOUR_KV_ID_HERE"
 
 # Pre-fetches one popular title every 2 minutes
 [triggers]
