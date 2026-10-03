@@ -41,6 +41,27 @@ const plain = (h) =>
     .replace(/\s+/g, ' ')
     .trim();
 
+
+// The grid row only holds a short preview (~80 characters). Look for the same sentence elsewhere in the
+// page (expanded panel / embedded JSON) and use the longest version found.
+function expandText(html, preview) {
+  const prefix = preview.slice(0, 45).split(/[,'"&]/)[0].trim();
+  if (prefix.length < 20) return preview;
+  let best = preview;
+  let from = 0;
+  for (let n = 0; n < 12; n++) {
+    const i = html.indexOf(prefix, from);
+    if (i < 0) break;
+    from = i + prefix.length;
+    let chunk = html.slice(i, i + 900);
+    const stop = chunk.search(/<|(?<!\\)"\s*[,}\]]/);
+    if (stop > 0) chunk = chunk.slice(0, stop);
+    const t = plain(chunk.replace(/\\u0027|&#0?39;/g, "'").replace(/\\"/g, '"').replace(/\\n/g, ' '));
+    if (t.length > best.length && t.startsWith(preview.slice(0, 20))) best = t;
+  }
+  return best;
+}
+
 function gridItem(html, re, from = 0) {
   const m = re.exec(html.slice(from));
   if (!m) return null;
@@ -68,6 +89,7 @@ function gridItem(html, re, from = 0) {
     .replace(/\s+/g, ' ')
     .trim();
   if (text.length < 12) text = '';
+  else text = expandText(html, text);
   return { score, text, index: from + m.index };
 }
 

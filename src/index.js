@@ -19,7 +19,7 @@ const FRESH_FOUND = 7 * 86400e3;
 const FRESH_MISSING = 6 * 3600e3;
 const BUDGET_MS = Number(2500);   // max wait before answering with partial data
 const FETCH_TIMEOUT_MS = 5000;
-const KEY = 'v6';
+const KEY = 'v7';
 
 const CORS = { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*' };
 const json = (data, status = 200, extra = {}) =>
@@ -31,7 +31,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const MANIFEST = {
   id: 'community.isitsafe.live.compact',
-  version: '6.2.0',
+  version: '6.3.0',
   name: 'IsItSafe',
   description: 'Sex/nudity safety rating (isitsafe.tv, Kids-In-Mind, IMDb) plus age ratings.',
   resources: ['stream', 'meta'],
@@ -359,7 +359,8 @@ function render(d, imdbId) {
   }
   const cs = d.csm?.sex;
   if (cs && (cs.text || cs.score != null)) {
-    const text = cs.text ? shorten(cs.text) : `Sex, romance & nudity ${cs.score}/5`;
+    const short = cs.text ? shorten(cs.text) : '';
+    const text = short ? (/[.!?"')]$/.test(short) ? short : `${short}…`) : `Sex, romance & nudity ${cs.score}/5`;
     content.push({ id: 'csm', text, chip: cs.score != null ? `CSM Sex ${cs.score}/5` : null });
   }
   if (d.kim) {
