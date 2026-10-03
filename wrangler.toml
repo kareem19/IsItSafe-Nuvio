@@ -5,7 +5,7 @@ compatibility_date = "2025-09-01"
 # Persistent cache (see README step 1: create the KV namespace, paste its id here)
 [[kv_namespaces]]
 binding = "CACHE"
-id = "d0c18ce46e9fe206cf517efa1f8cf9b0"
+id = "b9ffe10a3a6a45a29bfedf1c89e5fd04"
 
 # Pre-fetches one popular title every 2 minutes
 [triggers]
